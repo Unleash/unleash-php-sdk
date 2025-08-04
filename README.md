@@ -1,7 +1,7 @@
-[![Tests](https://github.com/Unleash/unleash-client-php/actions/workflows/tests.yaml/badge.svg)](https://github.com/Unleash/unleash-client-php/actions/workflows/tests.yaml)
-[![Tests (8.x)](https://github.com/Unleash/unleash-client-php/actions/workflows/tests-8.x.yaml/badge.svg)](https://github.com/Unleash/unleash-client-php/actions/workflows/tests-8.x.yaml)
-[![Tests (7.x)](https://github.com/Unleash/unleash-client-php/actions/workflows/tests-7.x.yaml/badge.svg)](https://github.com/Unleash/unleash-client-php/actions/workflows/tests-7.x.yaml)
-[![Coverage Status](https://img.shields.io/coverallsCoverage/github/Unleash/unleash-client-php?label=Code%20Coverage)](https://coveralls.io/github/Unleash/unleash-client-php?branch=main)
+[![Tests](https://github.com/Unleash/unleash-php-sdk/actions/workflows/tests.yaml/badge.svg)](https://github.com/Unleash/unleash-php-sdk/actions/workflows/tests.yaml)
+[![Tests (8.x)](https://github.com/Unleash/unleash-php-sdk/actions/workflows/tests-8.x.yaml/badge.svg)](https://github.com/Unleash/unleash-php-sdk/actions/workflows/tests-8.x.yaml)
+[![Tests (7.x)](https://github.com/Unleash/unleash-php-sdk/actions/workflows/tests-7.x.yaml/badge.svg)](https://github.com/Unleash/unleash-php-sdk/actions/workflows/tests-7.x.yaml)
+[![Coverage Status](https://img.shields.io/coverallsCoverage/github/Unleash/unleash-php-sdk?label=Code%20Coverage)](https://coveralls.io/github/Unleash/unleash-php-sdk?branch=main)
 [![Download](https://img.shields.io/packagist/dt/unleash/client.svg)](https://packagist.org/packages/unleash/client)
 
 <!-- TOC -->

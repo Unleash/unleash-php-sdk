@@ -97,7 +97,7 @@ final class ConstraintTest extends AbstractHttpClientTestCase
     }
 
     /**
-     * @see https://github.com/Unleash/unleash-client-php/issues/151
+     * @see https://github.com/Unleash/unleash-php-sdk/issues/151
      */
     public function testDateBeforeGetValues()
     {
