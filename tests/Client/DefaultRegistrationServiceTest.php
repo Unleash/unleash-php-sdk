@@ -3,7 +3,6 @@
 namespace Unleash\Client\Tests\Client;
 
 use ArrayIterator;
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use RuntimeException;
 use Unleash\Client\Client\DefaultRegistrationService;
