@@ -1,7 +1,13 @@
-[![Tests](https://github.com/Unleash/unleash-client-php/actions/workflows/tests.yaml/badge.svg)](https://github.com/Unleash/unleash-client-php/actions/workflows/tests.yaml)
-[![Tests (8.x)](https://github.com/Unleash/unleash-client-php/actions/workflows/tests-8.x.yaml/badge.svg)](https://github.com/Unleash/unleash-client-php/actions/workflows/tests-8.x.yaml)
-[![Tests (7.x)](https://github.com/Unleash/unleash-client-php/actions/workflows/tests-7.x.yaml/badge.svg)](https://github.com/Unleash/unleash-client-php/actions/workflows/tests-7.x.yaml)
-[![Coverage Status](https://img.shields.io/coverallsCoverage/github/Unleash/unleash-client-php?label=Code%20Coverage)](https://coveralls.io/github/Unleash/unleash-client-php?branch=main)
+# Unleash PHP SDK
+
+Unleash is a private, secure, and scalable [feature management platform](https://www.getunleash.io/) built to reduce the risk of releasing new features and accelerate software development. This PHP SDK is designed to help you integrate with Unleash and evaluate feature flags inside your application.
+
+You can use this client with [Unleash Enterprise](https://www.getunleash.io/pricing?utm_source=readme&utm_medium=php) or [Unleash Open Source](https://github.com/Unleash/unleash).
+
+[![Tests](https://github.com/Unleash/unleash-php-sdk/actions/workflows/tests.yaml/badge.svg)](https://github.com/Unleash/unleash-php-sdk/actions/workflows/tests.yaml)
+[![Tests (8.x)](https://github.com/Unleash/unleash-php-sdk/actions/workflows/tests-8.x.yaml/badge.svg)](https://github.com/Unleash/unleash-php-sdk/actions/workflows/tests-8.x.yaml)
+[![Tests (7.x)](https://github.com/Unleash/unleash-php-sdk/actions/workflows/tests-7.x.yaml/badge.svg)](https://github.com/Unleash/unleash-php-sdk/actions/workflows/tests-7.x.yaml)
+[![Coverage Status](https://img.shields.io/coverallsCoverage/github/Unleash/unleash-php-sdk?label=Code%20Coverage)](https://coveralls.io/github/Unleash/unleash-php-sdk?branch=main)
 [![Download](https://img.shields.io/packagist/dt/unleash/client.svg)](https://packagist.org/packages/unleash/client)
 
 <!-- TOC -->
@@ -350,8 +356,8 @@ $repository->refreshCache();
 
 ## Proxy SDK
 
-By default the SDK uses the Server-side endpoints on the Unleash API. You can also use the Proxy SDK, which is a
-lightweight SDK that uses the Client-side endpoints on the Unleash API. The Proxy SDK give a substantial performance improvement when using a large set of feature toggles (10K+).
+By default the SDK uses the Backend endpoints on the Unleash API. You can also use the Proxy SDK, which is a
+lightweight SDK that uses the Frontend endpoints on the Unleash API. The Proxy SDK give a substantial performance improvement when using a large set of feature toggles (10K+).
 
 To use the Proxy SDK, you need to call `withProxy($apiKey)` on the builder. The `$apiKey` needs to be a [frontend token](https://docs.getunleash.io/reference/api-tokens-and-client-keys#front-end-tokens). Note that `withProxy($apiKey)` is in lieu of setting the API key header.
 
@@ -361,7 +367,7 @@ Example of using the builder to create a Proxy SDK instance:
 <?php
 $builder = UnleashBuilder::create()
     ->withAppName('Some app name')
-    ->withAppUrl('https://some-app-url.com/api')
+    ->withAppUrl('https://some-app-url.com/api/frontend')
     ->withInstanceId('Some instance id')
     ->withProxy("some-proxy-key"); // <-- This is the only difference
 

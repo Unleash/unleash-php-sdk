@@ -3,7 +3,6 @@
 namespace Unleash\Client\Tests\Client;
 
 use ArrayIterator;
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use RuntimeException;
 use Unleash\Client\Client\DefaultRegistrationService;
@@ -96,7 +95,7 @@ final class DefaultRegistrationServiceTest extends AbstractHttpClientTestCase
     }
 
     /**
-     * @see https://github.com/Unleash/unleash-client-php/issues/132
+     * @see https://github.com/Unleash/unleash-php-sdk/issues/132
      */
     public function testRegistrationException()
     {

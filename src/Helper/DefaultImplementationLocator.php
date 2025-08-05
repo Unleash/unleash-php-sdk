@@ -76,7 +76,7 @@ final class DefaultImplementationLocator
              * Due to how php-http/discovery works, this scenario is unlikely to happen.
              * See linked comment for more info.
              *
-             * https://github.com/Unleash/unleash-client-php/pull/27#issuecomment-920764416
+             * https://github.com/Unleash/unleash-php-sdk/pull/27#issuecomment-920764416
              */
             return null;
             // @codeCoverageIgnoreEnd

@@ -382,7 +382,7 @@ final class DefaultUnleashRepositoryTest extends AbstractHttpClientTestCase
     }
 
     /**
-     * @see https://github.com/Unleash/unleash-client-php/issues/129
+     * @see https://github.com/Unleash/unleash-php-sdk/issues/129
      */
     public function testFallbackStaleCacheNoException()
     {
