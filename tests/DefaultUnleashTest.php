@@ -649,7 +649,7 @@ final class DefaultUnleashTest extends AbstractHttpClientTestCase
                 $this->calledCount = &$calledCount;
             }
 
-            public static function getSubscribedEvents()
+            public static function getSubscribedEvents(): array
             {
                 return [UnleashEvents::FEATURE_TOGGLE_MISSING_STRATEGY_HANDLER => 'onNoStrategyHandler'];
             }
