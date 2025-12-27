@@ -90,7 +90,9 @@ final class UnleashBuilderTest extends TestCase
     {
         self::assertNotSame($this->instance, $this->instance->withStrategies(new DefaultStrategyHandler()));
         $strategiesProperty = (new ReflectionObject($this->instance))->getProperty('strategies');
-        $strategiesProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $strategiesProperty->setAccessible(true);
+        }
 
         self::assertCount(8, $strategiesProperty->getValue($this->instance));
         $instance = $this->instance->withStrategies(new class implements StrategyHandler {
@@ -166,14 +168,20 @@ final class UnleashBuilderTest extends TestCase
             ->build();
         $reflection = new ReflectionObject($instance);
         $repositoryProperty = $reflection->getProperty('repository');
-        $repositoryProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $repositoryProperty->setAccessible(true);
+        }
         $repository = $repositoryProperty->getValue($instance);
         $strategiesProperty = $reflection->getProperty('strategyHandlers');
-        $strategiesProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $strategiesProperty->setAccessible(true);
+        }
         $strategies = $strategiesProperty->getValue($instance);
         $reflection = new ReflectionObject($repository);
         $configurationProperty = $reflection->getProperty('configuration');
-        $configurationProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $configurationProperty->setAccessible(true);
+        }
         $configuration = $configurationProperty->getValue($repository);
         assert($configuration instanceof UnleashConfiguration);
 
@@ -197,9 +205,13 @@ final class UnleashBuilderTest extends TestCase
             ->build();
         $repository = new ReflectionObject($repositoryProperty->getValue($instance));
         $httpClientProperty = $repository->getProperty('httpClient');
-        $httpClientProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $httpClientProperty->setAccessible(true);
+        }
         $requestFactoryProperty = $repository->getProperty('requestFactory');
-        $requestFactoryProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $requestFactoryProperty->setAccessible(true);
+        }
         self::assertEquals($httpClient, $httpClientProperty->getValue($repositoryProperty->getValue($instance)));
         self::assertEquals($requestFactory, $requestFactoryProperty->getValue($repositoryProperty->getValue($instance)));
 
@@ -242,7 +254,9 @@ final class UnleashBuilderTest extends TestCase
             ->withHeader('Some-Header', 'test');
         $reflection = new ReflectionObject($instance);
         $headersProperty = $reflection->getProperty('headers');
-        $headersProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $headersProperty->setAccessible(true);
+        }
         $headers = $headersProperty->getValue($instance);
         self::assertCount(2, $headers);
 
@@ -261,17 +275,23 @@ final class UnleashBuilderTest extends TestCase
             ->build();
         $reflection = new ReflectionObject($unleash);
         $repositoryProperty = $reflection->getProperty('repository');
-        $repositoryProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $repositoryProperty->setAccessible(true);
+        }
         $repository = $repositoryProperty->getValue($unleash);
 
         $reflection = new ReflectionObject($repository);
         $configurationProperty = $reflection->getProperty('configuration');
-        $configurationProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $configurationProperty->setAccessible(true);
+        }
         $configuration = $configurationProperty->getValue($repository);
 
         $reflection = new ReflectionObject($configuration);
         $headersPropertyBuilt = $reflection->getProperty('headers');
-        $headersPropertyBuilt->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $headersPropertyBuilt->setAccessible(true);
+        }
         $headersBuilt = $headersPropertyBuilt->getValue($configuration);
         self::assertEquals($headers, $headersBuilt);
 
@@ -306,7 +326,9 @@ final class UnleashBuilderTest extends TestCase
         $instance = $this->instance->withGitlabEnvironment('Test');
         $reflection = new ReflectionObject($instance);
         $appNameProperty = $reflection->getProperty('appName');
-        $appNameProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $appNameProperty->setAccessible(true);
+        }
         self::assertEquals('Test', $appNameProperty->getValue($instance));
     }
 
@@ -331,15 +353,21 @@ final class UnleashBuilderTest extends TestCase
         $unleash = $instance->build();
 
         $locatorProperty = (new ReflectionObject($instance))->getProperty('defaultImplementationLocator');
-        $locatorProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $locatorProperty->setAccessible(true);
+        }
         $locator = $locatorProperty->getValue($instance);
 
         $repositoryProperty = (new ReflectionObject($unleash))->getProperty('repository');
-        $repositoryProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $repositoryProperty->setAccessible(true);
+        }
         $repository = $repositoryProperty->getValue($unleash);
 
         $httpClientProperty = (new ReflectionObject($repository))->getProperty('httpClient');
-        $httpClientProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $httpClientProperty->setAccessible(true);
+        }
         $httpClient = $httpClientProperty->getValue($repository);
 
         self::assertInstanceOf(ClientInterface::class, $httpClient);
@@ -356,14 +384,20 @@ final class UnleashBuilderTest extends TestCase
         Psr18ClientDiscovery::setStrategies($discoveryStrategies);
 
         $configurationProperty = (new ReflectionObject($repository))->getProperty('configuration');
-        $configurationProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $configurationProperty->setAccessible(true);
+        }
         $configuration = $configurationProperty->getValue($repository);
 
         $cacheProperty = (new ReflectionObject($configuration))->getProperty('cache');
-        $cacheProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $cacheProperty->setAccessible(true);
+        }
 
         $defaultImplementationsProperty = (new ReflectionObject($locator))->getProperty('defaultImplementations');
-        $defaultImplementationsProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $defaultImplementationsProperty->setAccessible(true);
+        }
         $defaultImplementations = $defaultImplementationsProperty->getValue($locator);
 
         // cache/filesystem-adapter should be used by default if it's installed
@@ -408,9 +442,13 @@ final class UnleashBuilderTest extends TestCase
         $instance = UnleashBuilder::createForGitlab();
 
         $autoRegistrationProperty = (new ReflectionObject($instance))->getProperty('autoregister');
-        $autoRegistrationProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $autoRegistrationProperty->setAccessible(true);
+        }
         $metricsProperty = (new ReflectionObject($instance))->getProperty('metricsEnabled');
-        $metricsProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $metricsProperty->setAccessible(true);
+        }
 
         self::assertFalse($autoRegistrationProperty->getValue($instance));
         self::assertFalse($metricsProperty->getValue($instance));
@@ -419,7 +457,9 @@ final class UnleashBuilderTest extends TestCase
     public function testWithStrategy()
     {
         $strategiesProperty = (new ReflectionObject($this->instance))->getProperty('strategies');
-        $strategiesProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $strategiesProperty->setAccessible(true);
+        }
 
         self::assertCount(8, $strategiesProperty->getValue($this->instance));
         $instance = $this->instance->withStrategy(new class implements StrategyHandler {
@@ -448,7 +488,9 @@ final class UnleashBuilderTest extends TestCase
         $provider = new DefaultUnleashContextProvider();
         $instance = $this->instance->withContextProvider($provider);
         $providerProperty = (new ReflectionObject($instance))->getProperty('contextProvider');
-        $providerProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $providerProperty->setAccessible(true);
+        }
         self::assertSame($provider, $providerProperty->getValue($instance));
     }
 
@@ -894,17 +936,23 @@ final class UnleashBuilderTest extends TestCase
         $unleash = $base->build();
         $reflection = new ReflectionObject($unleash);
         $repositoryProperty = $reflection->getProperty('repository');
-        $repositoryProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $repositoryProperty->setAccessible(true);
+        }
         $repository = $repositoryProperty->getValue($unleash);
 
         $reflection = new ReflectionObject($repository);
         $configurationProperty = $reflection->getProperty('configuration');
-        $configurationProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $configurationProperty->setAccessible(true);
+        }
         $configuration = $configurationProperty->getValue($repository);
 
         $reflection = new ReflectionObject($configuration);
         $headersPropertyBuilt = $reflection->getProperty('headers');
-        $headersPropertyBuilt->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $headersPropertyBuilt->setAccessible(true);
+        }
         $headersBuilt = $headersPropertyBuilt->getValue($configuration);
         self::assertArrayHasKey('Authorization', $headersBuilt);
     }
@@ -1002,7 +1050,9 @@ final class UnleashBuilderTest extends TestCase
             ->buildRepository();
         $reflection = new ReflectionObject($repository);
         $configurationProperty = $reflection->getProperty('configuration');
-        $configurationProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $configurationProperty->setAccessible(true);
+        }
         $configuration = $configurationProperty->getValue($repository);
         assert($configuration instanceof UnleashConfiguration);
 
@@ -1025,9 +1075,13 @@ final class UnleashBuilderTest extends TestCase
             ->buildRepository();
         $reflection = new ReflectionObject($repository);
         $httpClientProperty = $reflection->getProperty('httpClient');
-        $httpClientProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $httpClientProperty->setAccessible(true);
+        }
         $requestFactoryProperty = $reflection->getProperty('requestFactory');
-        $requestFactoryProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $requestFactoryProperty->setAccessible(true);
+        }
         self::assertEquals($httpClient, $httpClientProperty->getValue($repository));
         self::assertEquals($requestFactory, $requestFactoryProperty->getValue($repository));
 
@@ -1043,7 +1097,9 @@ final class UnleashBuilderTest extends TestCase
 
         $reflection = new ReflectionObject($repository);
         $configurationProperty = $reflection->getProperty('configuration');
-        $configurationProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $configurationProperty->setAccessible(true);
+        }
         $configuration = $configurationProperty->getValue($repository);
         assert($configuration instanceof UnleashConfiguration);
         self::assertEquals($cacheHandler, $configuration->getCache());
@@ -1053,7 +1109,9 @@ final class UnleashBuilderTest extends TestCase
     private function getConfiguration(DefaultUnleash $unleash): UnleashConfiguration
     {
         $configurationProperty = (new ReflectionObject($unleash))->getProperty('configuration');
-        $configurationProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $configurationProperty->setAccessible(true);
+        }
 
         return $configurationProperty->getValue($unleash);
     }
@@ -1081,7 +1139,9 @@ final class UnleashBuilderTest extends TestCase
     private function getProperty(object $object, string $property)
     {
         $property = $this->getReflection($object)->getProperty($property);
-        $property->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $property->setAccessible(true);
+        }
 
         return $property->getValue($object);
     }

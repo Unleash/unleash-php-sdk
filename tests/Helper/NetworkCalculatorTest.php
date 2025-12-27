@@ -77,7 +77,9 @@ final class NetworkCalculatorTest extends TestCase
     {
         $reflection = new ReflectionObject($calculator);
         $property = $reflection->getProperty('ipAddress');
-        $property->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $property->setAccessible(true);
+        }
 
         return $property->getValue($calculator);
     }
@@ -86,7 +88,9 @@ final class NetworkCalculatorTest extends TestCase
     {
         $reflection = new ReflectionObject($calculator);
         $property = $reflection->getProperty('networkSize');
-        $property->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $property->setAccessible(true);
+        }
 
         return $property->getValue($calculator);
     }
