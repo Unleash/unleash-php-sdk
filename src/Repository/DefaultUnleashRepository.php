@@ -82,11 +82,20 @@ use Unleash\Client\Unleash;
  *       impressionData?: bool,
  *   }
  */
-final readonly class DefaultUnleashRepository implements UnleashRepository
+final class DefaultUnleashRepository implements UnleashRepository
 {
     public function __construct(
+        /**
+         * @readonly
+         */
         private ClientInterface $httpClient,
+        /**
+         * @readonly
+         */
         private RequestFactoryInterface $requestFactory,
+        /**
+         * @readonly
+         */
         private UnleashConfiguration $configuration,
     ) {
     }

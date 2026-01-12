@@ -10,11 +10,17 @@ use LogicException;
 use Override;
 use Unleash\Client\Enum\VariantPayloadType;
 
-final readonly class DefaultVariantPayload implements VariantPayload
+final class DefaultVariantPayload implements VariantPayload
 {
     public function __construct(
+        /**
+         * @readonly
+         */
         #[ExpectedValues(valuesFromClass: VariantPayloadType::class)]
         private string $type,
+        /**
+         * @readonly
+         */
         private string $value,
     ) {
     }

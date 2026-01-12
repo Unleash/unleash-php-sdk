@@ -25,17 +25,35 @@ use Unleash\Client\Repository\UnleashRepository;
 use Unleash\Client\Strategy\StrategyHandler;
 use Unleash\Client\Variant\VariantHandler;
 
-final readonly class DefaultUnleash implements Unleash
+final class DefaultUnleash implements Unleash
 {
     /**
      * @param iterable<StrategyHandler> $strategyHandlers
      */
     public function __construct(
+        /**
+         * @readonly
+         */
         private iterable $strategyHandlers,
+        /**
+         * @readonly
+         */
         private UnleashRepository $repository,
+        /**
+         * @readonly
+         */
         private RegistrationService $registrationService,
+        /**
+         * @readonly
+         */
         private UnleashConfiguration $configuration,
+        /**
+         * @readonly
+         */
         private MetricsHandler $metricsHandler,
+        /**
+         * @readonly
+         */
         private VariantHandler $variantHandler,
     ) {
         if ($configuration->isAutoRegistrationEnabled()) {
