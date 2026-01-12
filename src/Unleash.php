@@ -9,7 +9,7 @@ interface Unleash
 {
     public const string SDK_NAME = 'unleash-php-sdk';
 
-    public const string SDK_VERSION = '2.9.1';
+    public const string SDK_VERSION = '2.9.2';
 
     public const string SPECIFICATION_VERSION = '5.1.9';
 
