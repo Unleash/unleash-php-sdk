@@ -25,19 +25,55 @@ use Unleash\Client\Repository\UnleashRepository;
 use Unleash\Client\Strategy\StrategyHandler;
 use Unleash\Client\Variant\VariantHandler;
 
-final readonly class DefaultUnleash implements Unleash
+final class DefaultUnleash implements Unleash
 {
+    /**
+     * @var iterable<StrategyHandler>
+     * @readonly
+     */
+    private $strategyHandlers;
+    /**
+     * @readonly
+     * @var \Unleash\Client\Repository\UnleashRepository
+     */
+    private $repository;
+    /**
+     * @readonly
+     * @var \Unleash\Client\Client\RegistrationService
+     */
+    private $registrationService;
+    /**
+     * @readonly
+     * @var \Unleash\Client\Configuration\UnleashConfiguration
+     */
+    private $configuration;
+    /**
+     * @readonly
+     * @var \Unleash\Client\Metrics\MetricsHandler
+     */
+    private $metricsHandler;
+    /**
+     * @readonly
+     * @var \Unleash\Client\Variant\VariantHandler
+     */
+    private $variantHandler;
     /**
      * @param iterable<StrategyHandler> $strategyHandlers
      */
     public function __construct(
-        private iterable $strategyHandlers,
-        private UnleashRepository $repository,
-        private RegistrationService $registrationService,
-        private UnleashConfiguration $configuration,
-        private MetricsHandler $metricsHandler,
-        private VariantHandler $variantHandler,
+        iterable $strategyHandlers,
+        UnleashRepository $repository,
+        RegistrationService $registrationService,
+        UnleashConfiguration $configuration,
+        MetricsHandler $metricsHandler,
+        VariantHandler $variantHandler
     ) {
+        $this->strategyHandlers = $strategyHandlers;
+        $this->repository = $repository;
+        $this->registrationService = $registrationService;
+        $this->configuration = $configuration;
+        $this->metricsHandler = $metricsHandler;
+        $this->variantHandler = $variantHandler;
         if ($configuration->isAutoRegistrationEnabled()) {
             $this->register();
         }
@@ -46,7 +82,7 @@ final readonly class DefaultUnleash implements Unleash
     #[Override]
     public function isEnabled(string $featureName, ?Context $context = null, bool $default = false): bool
     {
-        $context ??= $this->configuration->getContextProvider()->getContext();
+        $context = $context ?? $this->configuration->getContextProvider()->getContext();
         $feature = $this->findFeature($featureName, $context);
 
         if ($feature !== null) {
@@ -69,12 +105,12 @@ final readonly class DefaultUnleash implements Unleash
     #[Override]
     public function getVariant(string $featureName, ?Context $context = null, ?Variant $fallbackVariant = null): Variant
     {
-        $fallbackVariant ??= $this->variantHandler->getDefaultVariant();
-        $context ??= $this->configuration->getContextProvider()->getContext();
+        $fallbackVariant = $fallbackVariant ?? $this->variantHandler->getDefaultVariant();
+        $context = $context ?? $this->configuration->getContextProvider()->getContext();
 
         $feature = $this->findFeature($featureName, $context);
         $enabledResult = $this->isFeatureEnabled($feature, $context);
-        $strategyVariants = $enabledResult->getStrategy()?->getVariants() ?? [];
+        $strategyVariants = (($nullsafeVariable1 = $enabledResult->getStrategy()) ? $nullsafeVariable1->getVariants() : null) ?? [];
         if (
             $feature === null
             || $enabledResult->isEnabled() === false
@@ -86,7 +122,7 @@ final readonly class DefaultUnleash implements Unleash
         if (!count($strategyVariants)) {
             $variant = $this->variantHandler->selectVariant($feature->getVariants(), $featureName, $context);
         } else {
-            $variant = $this->variantHandler->selectVariant($strategyVariants, $enabledResult->getStrategy()?->getParameters()['groupId'] ?? '', $context);
+            $variant = $this->variantHandler->selectVariant($strategyVariants, (($nullsafeVariable2 = $enabledResult->getStrategy()) ? $nullsafeVariable2->getParameters() : null)['groupId'] ?? '', $context);
         }
         if ($variant !== null) {
             $this->metricsHandler->handleMetrics($feature, true, $variant);
@@ -261,7 +297,9 @@ final readonly class DefaultUnleash implements Unleash
 
         $variant = $this->getVariant($dependency->getFeature()->getName(), $context);
 
-        $requiredVariants = array_map(fn (Variant $variant) => $variant->getName(), $dependency->getRequiredVariants());
+        $requiredVariants = array_map(function (Variant $variant) {
+            return $variant->getName();
+        }, $dependency->getRequiredVariants());
 
         return in_array($variant->getName(), $requiredVariants, true);
     }
