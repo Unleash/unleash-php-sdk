@@ -6,18 +6,36 @@ use JetBrains\PhpStorm\ExpectedValues;
 use Override;
 use Unleash\Client\Enum\ConstraintOperator;
 
-final readonly class DefaultConstraint implements Constraint
+final class DefaultConstraint implements Constraint
 {
     /**
      * @param array<string> $values
      */
     public function __construct(
+        /**
+         * @readonly
+         */
         private string $contextName,
+        /**
+         * @readonly
+         */
         #[ExpectedValues(valuesFromClass: ConstraintOperator::class)]
         private string $operator,
+        /**
+         * @readonly
+         */
         private ?array $values = null,
+        /**
+         * @readonly
+         */
         private ?string $singleValue = null,
+        /**
+         * @readonly
+         */
         private bool $inverted = false,
+        /**
+         * @readonly
+         */
         private bool $caseInsensitive = false,
     ) {
     }
