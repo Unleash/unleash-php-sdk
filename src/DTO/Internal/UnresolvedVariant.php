@@ -11,11 +11,16 @@ use Unleash\Client\Enum\Stickiness;
 /**
  * @internal
  */
-final readonly class UnresolvedVariant implements Variant
+final class UnresolvedVariant implements Variant
 {
-    public function __construct(
-        private string $name,
-    ) {
+    /**
+     * @readonly
+     * @var string
+     */
+    private $name;
+    public function __construct(string $name)
+    {
+        $this->name = $name;
     }
 
     #[Override]
@@ -48,7 +53,6 @@ final readonly class UnresolvedVariant implements Variant
         return [];
     }
 
-    #[ExpectedValues(valuesFromClass: Stickiness::class)]
     #[Override]
     public function getStickiness(): string
     {
@@ -63,7 +67,7 @@ final readonly class UnresolvedVariant implements Variant
      * @noinspection PhpMixedReturnTypeCanBeReducedInspection
      */
     #[Override]
-    public function jsonSerialize(): mixed
+    public function jsonSerialize()
     {
         return null;
     }

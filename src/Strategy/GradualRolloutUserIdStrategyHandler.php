@@ -9,13 +9,17 @@ use Unleash\Client\DTO\DefaultStrategy;
 use Unleash\Client\DTO\Strategy;
 use Unleash\Client\Enum\Stickiness;
 
-#[Deprecated(reason: 'The strategy has been deprecated, please use Gradual Rollout (flexibleRollout)')]
 final class GradualRolloutUserIdStrategyHandler extends AbstractStrategyHandler
 {
-    public function __construct(private readonly GradualRolloutStrategyHandler $rolloutStrategyHandler)
+    /**
+     * @readonly
+     * @var \Unleash\Client\Strategy\GradualRolloutStrategyHandler
+     */
+    private $rolloutStrategyHandler;
+    public function __construct(GradualRolloutStrategyHandler $rolloutStrategyHandler)
     {
+        $this->rolloutStrategyHandler = $rolloutStrategyHandler;
     }
-
     #[Override]
     public function isEnabled(Strategy $strategy, Context $context): bool
     {
@@ -30,7 +34,6 @@ final class GradualRolloutUserIdStrategyHandler extends AbstractStrategyHandler
 
         return $this->rolloutStrategyHandler->isEnabled($transformedStrategy, $context);
     }
-
     #[Override]
     public function getStrategyName(): string
     {
