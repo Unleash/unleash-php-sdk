@@ -13,7 +13,7 @@ jobs:
         version: ['7.2', '7.3', '7.4']
     steps:
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@2.37.1
         with:
           php-version: ${{ matrix.version }}
       - name: Checkout Code
