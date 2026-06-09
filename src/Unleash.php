@@ -7,11 +7,20 @@ use Unleash\Client\DTO\Variant;
 
 interface Unleash
 {
-    public const string SDK_NAME = 'unleash-php-sdk';
+    /**
+     * @var string
+     */
+    public const SDK_NAME = 'unleash-php-sdk';
 
-    public const string SDK_VERSION = '2.9.2';
+    /**
+     * @var string
+     */
+    public const SDK_VERSION = '2.9.2';
 
-    public const string SPECIFICATION_VERSION = '5.1.9';
+    /**
+     * @var string
+     */
+    public const SPECIFICATION_VERSION = '5.1.9';
 
     public function isEnabled(string $featureName, ?Context $context = null, bool $default = false): bool;
 

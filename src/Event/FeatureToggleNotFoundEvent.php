@@ -10,8 +10,14 @@ final class FeatureToggleNotFoundEvent extends AbstractEvent
      * @internal
      */
     public function __construct(
-        private readonly Context $context,
-        private readonly string $featureName,
+        /**
+         * @readonly
+         */
+        private Context $context,
+        /**
+         * @readonly
+         */
+        private string $featureName,
     ) {
     }
 
