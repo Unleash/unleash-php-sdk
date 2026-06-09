@@ -10,16 +10,22 @@ use Unleash\Client\DTO\Variant;
 use Unleash\Client\Enum\Stickiness;
 use Unleash\Client\Stickiness\StickinessCalculator;
 
-final readonly class DefaultVariantHandler implements VariantHandler
+final class DefaultVariantHandler implements VariantHandler
 {
-    private const int VARIANT_HASH_SEED = 86028157;
+    /**
+     * @readonly
+     */
+    private StickinessCalculator $stickinessCalculator;
+    /**
+     * @var int
+     */
+    private const VARIANT_HASH_SEED = 86028157;
 
-    public function __construct(
-        private StickinessCalculator $stickinessCalculator,
-    ) {
+    public function __construct(StickinessCalculator $stickinessCalculator)
+    {
+        $this->stickinessCalculator = $stickinessCalculator;
     }
 
-    #[Pure]
     #[Override]
     public function getDefaultVariant(): Variant
     {

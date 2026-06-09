@@ -18,19 +18,33 @@ use Unleash\Client\Unleash;
 
 final class DefaultRegistrationService implements RegistrationService
 {
-    public function __construct(
-        private readonly ClientInterface $httpClient,
-        private readonly RequestFactoryInterface $requestFactory,
-        private readonly UnleashConfiguration $configuration,
+    /**
+     * @readonly
+     */
+    private ClientInterface $httpClient;
+    /**
+     * @readonly
+     */
+    private RequestFactoryInterface $requestFactory;
+    /**
+     * @readonly
+     */
+    private UnleashConfiguration $configuration;
+    private ?string $sdkName = '';
+    private ?string $sdkVersion = '';
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, UnleashConfiguration $configuration, ?string $sdkName = '', ?string $sdkVersion = '')
+    {
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
+        $this->configuration = $configuration;
         /**
          * @deprecated use configuration sdkVersion property
          */
-        private ?string $sdkName = '',
+        $this->sdkName = $sdkName;
         /**
          * @deprecated use configuration sdkVersion property
          */
-        private ?string $sdkVersion = '',
-    ) {
+        $this->sdkVersion = $sdkVersion;
     }
 
     /**
@@ -61,7 +75,7 @@ final class DefaultRegistrationService implements RegistrationService
                 'instanceId' => $this->configuration->getInstanceId(),
                 'sdkVersion' => ($legacySdkVersion !== ':') ? $legacySdkVersion : $this->configuration->getSdkVersion(),
                 'strategies' => array_map(fn (StrategyHandler $strategyHandler): string => $strategyHandler->getStrategyName(), $strategyHandlers),
-                'started' => new DateTimeImmutable()->format('c'),
+                'started' => (new DateTimeImmutable())->format('c'),
                 'interval' => $this->configuration->getMetricsInterval(),
                 'platformName' => PHP_SAPI,
                 'platformVersion' => PHP_VERSION,
@@ -75,7 +89,7 @@ final class DefaultRegistrationService implements RegistrationService
         try {
             $response = $this->httpClient->sendRequest($request);
             $result = $response->getStatusCode() >= 200 && $response->getStatusCode() < 300;
-        } catch (Exception) {
+        } catch (Exception $exception) {
             $result = false;
         }
 
@@ -92,11 +106,14 @@ final class DefaultRegistrationService implements RegistrationService
         $hasNormalCache = $cache->has(CacheKey::REGISTRATION);
         $hasStaleCache = $staleCache->has(CacheKey::REGISTRATION);
 
-        return match (true) {
-            $hasNormalCache => (bool) $cache->get(CacheKey::REGISTRATION),
-            $hasStaleCache => (bool) $staleCache->get(CacheKey::REGISTRATION),
-            default => false,
-        };
+        switch (true) {
+            case $hasNormalCache:
+                return (bool) $cache->get(CacheKey::REGISTRATION);
+            case $hasStaleCache:
+                return (bool) $staleCache->get(CacheKey::REGISTRATION);
+            default:
+                return false;
+        }
     }
 
     private function storeCache(bool $result): void

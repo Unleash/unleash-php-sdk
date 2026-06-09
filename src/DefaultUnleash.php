@@ -25,19 +25,50 @@ use Unleash\Client\Repository\UnleashRepository;
 use Unleash\Client\Strategy\StrategyHandler;
 use Unleash\Client\Variant\VariantHandler;
 
-final readonly class DefaultUnleash implements Unleash
+final class DefaultUnleash implements Unleash
 {
+    /**
+     * @var iterable<StrategyHandler>
+     * @readonly
+     */
+    private iterable $strategyHandlers;
+    /**
+     * @readonly
+     */
+    private UnleashRepository $repository;
+    /**
+     * @readonly
+     */
+    private RegistrationService $registrationService;
+    /**
+     * @readonly
+     */
+    private UnleashConfiguration $configuration;
+    /**
+     * @readonly
+     */
+    private MetricsHandler $metricsHandler;
+    /**
+     * @readonly
+     */
+    private VariantHandler $variantHandler;
     /**
      * @param iterable<StrategyHandler> $strategyHandlers
      */
     public function __construct(
-        private iterable $strategyHandlers,
-        private UnleashRepository $repository,
-        private RegistrationService $registrationService,
-        private UnleashConfiguration $configuration,
-        private MetricsHandler $metricsHandler,
-        private VariantHandler $variantHandler,
+        iterable $strategyHandlers,
+        UnleashRepository $repository,
+        RegistrationService $registrationService,
+        UnleashConfiguration $configuration,
+        MetricsHandler $metricsHandler,
+        VariantHandler $variantHandler
     ) {
+        $this->strategyHandlers = $strategyHandlers;
+        $this->repository = $repository;
+        $this->registrationService = $registrationService;
+        $this->configuration = $configuration;
+        $this->metricsHandler = $metricsHandler;
+        $this->variantHandler = $variantHandler;
         if ($configuration->isAutoRegistrationEnabled()) {
             $this->register();
         }
@@ -75,7 +106,7 @@ final readonly class DefaultUnleash implements Unleash
         $feature = $this->findFeature($featureName, $context);
         $enabledResult = $this->isFeatureEnabled($feature, $context);
         $strategy = $enabledResult->getStrategy();
-        $strategyVariants = $strategy?->getVariants() ?? [];
+        $strategyVariants = (($nullsafeVariable1 = $strategy) ? $nullsafeVariable1->getVariants() : null) ?? [];
         if (
             $feature === null
             || $enabledResult->isEnabled() === false
