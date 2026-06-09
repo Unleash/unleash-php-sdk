@@ -37,7 +37,7 @@ final readonly class DefaultVariant implements Variant
     }
 
     /**
-     * @phpstan-return array<string|bool|array<string>>
+     * @phpstan-return array{name: string, enabled: bool, feature_enabled: bool, payload?: array<mixed, mixed>}
      */
     #[ArrayShape(['name' => 'string', 'enabled' => 'bool', 'payload' => 'mixed'])]
     #[Override]
@@ -53,7 +53,6 @@ final readonly class DefaultVariant implements Variant
             assert(is_array($result['payload']));
         }
 
-        // @phpstan-ignore-next-line return.type
         return $result;
     }
 
@@ -99,7 +98,6 @@ final readonly class DefaultVariant implements Variant
             $variant->getStickiness(),
             $variant->getPayload(),
             $variant->getOverrides(),
-            // @phpstan-ignore-next-line function.alreadyNarrowedType
             $featureEnabled ?? (method_exists($variant, 'isFeatureEnabled') ? $variant->isFeatureEnabled() : false),
         );
     }

@@ -70,6 +70,9 @@ jobs:
         run: composer require symfony/polyfill-php73:^1.0
       - name: Update composer.json version
         run: 'sed -i -e ''s/"php": "\^8.4"/"php": "\^${{ matrix.version }}"/'' composer.json'
+      - name: Pin simple-cache for Symfony Cache 5
+        if: matrix.version == '8.0'
+        run: 'sed -i -e ''s/"psr\/simple-cache": "\^1.0 | \^2.0 | \^3.0"/"psr\/simple-cache": "\^1.0 | \^2.0"/'' -e ''s/"psr\/simple-cache-implementation": "\^1.0 | \^2.0 | \^3.0"/"psr\/simple-cache-implementation": "\^1.0 | \^2.0"/'' composer.json'
       - name: Downgrade phpunit
         if: matrix.version == '7.2'
         run: 'sed -i -e ''s/"phpunit\/phpunit": "\^9.5"/"phpunit\/phpunit": "\^8.5"/'' composer.json'
