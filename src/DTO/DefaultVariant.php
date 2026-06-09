@@ -37,7 +37,7 @@ final readonly class DefaultVariant implements Variant
     }
 
     /**
-     * @phpstan-return array<string|bool|array<string>>
+     * @phpstan-return array{name: string, enabled: bool, feature_enabled: bool, payload?: array<mixed, mixed>}
      */
     #[ArrayShape(['name' => 'string', 'enabled' => 'bool', 'payload' => 'mixed'])]
     #[Override]
