@@ -74,7 +74,8 @@ final readonly class DefaultUnleash implements Unleash
 
         $feature = $this->findFeature($featureName, $context);
         $enabledResult = $this->isFeatureEnabled($feature, $context);
-        $strategyVariants = $enabledResult->getStrategy()?->getVariants() ?? [];
+        $strategy = $enabledResult->getStrategy();
+        $strategyVariants = $strategy?->getVariants() ?? [];
         if (
             $feature === null
             || $enabledResult->isEnabled() === false
@@ -86,7 +87,9 @@ final readonly class DefaultUnleash implements Unleash
         if (!count($strategyVariants)) {
             $variant = $this->variantHandler->selectVariant($feature->getVariants(), $featureName, $context);
         } else {
-            $variant = $this->variantHandler->selectVariant($strategyVariants, $enabledResult->getStrategy()?->getParameters()['groupId'] ?? '', $context);
+            assert($strategy !== null);
+
+            $variant = $this->variantHandler->selectVariant($strategyVariants, $strategy->getParameters()['groupId'] ?? '', $context);
         }
         if ($variant !== null) {
             $this->metricsHandler->handleMetrics($feature, true, $variant);
@@ -161,7 +164,6 @@ final readonly class DefaultUnleash implements Unleash
             return new DefaultFeatureEnabledResult();
         }
 
-        // @phpstan-ignore-next-line function.alreadyNarrowedType
         $dependencies = method_exists($feature, 'getDependencies')
             ? $feature->getDependencies()
             : [];
@@ -248,7 +250,6 @@ final readonly class DefaultUnleash implements Unleash
         assert($dependency->getFeature() !== null);
 
         if (
-            // @phpstan-ignore-next-line function.alreadyNarrowedType
             method_exists($dependency->getFeature(), 'getDependencies')
             && count($dependency->getFeature()->getDependencies())
         ) {
