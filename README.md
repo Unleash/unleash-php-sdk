@@ -1,3 +1,4 @@
+# This branch is auto generated
 # Unleash PHP SDK
 
 Unleash is a private, secure, and scalable [feature management platform](https://www.getunleash.io/) built to reduce the risk of releasing new features and accelerate software development. This PHP SDK is designed to help you integrate with Unleash and evaluate feature flags inside your application.
