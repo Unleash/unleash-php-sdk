@@ -154,4 +154,26 @@ final class DefaultRegistrationServiceTest extends AbstractHttpClientTestCase
         self::assertEquals('customAppName', $request->getHeaderLine('unleash-appname'));
         self::assertStringStartsWith('unleash-php-sdk:', $request->getHeaderLine('unleash-sdk'));
     }
+
+    public function testRegisterIncludesSdkFlavour()
+    {
+        $configuration = (new UnleashConfiguration('', '', ''))
+            ->setCache($this->getCache())
+            ->setSdkFlavour('test-wrapper', '2.3.4');
+
+        $instance = new DefaultRegistrationService(
+            $this->httpClient,
+            new HttpFactory(),
+            $configuration
+        );
+        $this->pushResponse([]);
+
+        $instance->register([]);
+
+        $request = $this->requestHistory[0]['request'];
+        $payload = json_decode((string) $request->getBody(), true, 512, JSON_THROW_ON_ERROR);
+
+        self::assertSame('test-wrapper', $payload['sdkFlavour']);
+        self::assertSame('2.3.4', $payload['sdkFlavourVersion']);
+    }
 }

@@ -26,19 +26,21 @@ final readonly class DefaultMetricsSender implements MetricsSender
             return;
         }
 
+        $payload = array_merge([
+            'appName' => $this->configuration->getAppName(),
+            'instanceId' => $this->configuration->getInstanceId(),
+            'bucket' => $bucket->jsonSerialize(),
+            'platformName' => PHP_SAPI,
+            'platformVersion' => PHP_VERSION,
+            'yggdrasilVersion' => null,
+            'specVersion' => Unleash::SPECIFICATION_VERSION,
+        ], $this->configuration->getSdkFlavourMetadata());
+
         $request = $this->requestFactory
             ->createRequest('POST', $this->configuration->getMetricsUrl())
             ->withHeader('Content-Type', 'application/json')
             ->withHeader('Unleash-Interval', (string) $this->configuration->getMetricsInterval())
-            ->withBody(new StringStream(json_encode([
-                'appName' => $this->configuration->getAppName(),
-                'instanceId' => $this->configuration->getInstanceId(),
-                'bucket' => $bucket->jsonSerialize(),
-                'platformName' => PHP_SAPI,
-                'platformVersion' => PHP_VERSION,
-                'yggdrasilVersion' => null,
-                'specVersion' => Unleash::SPECIFICATION_VERSION,
-            ], JSON_THROW_ON_ERROR)));
+            ->withBody(new StringStream(json_encode($payload, JSON_THROW_ON_ERROR)));
         foreach ($this->configuration->getHeaders() as $name => $value) {
             $request = $request->withHeader($name, $value);
         }

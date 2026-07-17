@@ -91,6 +91,10 @@ final class UnleashBuilder
 
     private ?int $metricsInterval = null;
 
+    private ?string $sdkFlavour = null;
+
+    private ?string $sdkFlavourVersion = null;
+
     private ?UnleashContextProvider $contextProvider = null;
 
     private ?BootstrapProvider $bootstrapProvider = null;
@@ -272,6 +276,14 @@ final class UnleashBuilder
     public function withMetricsInterval(int $milliseconds): self
     {
         return $this->with('metricsInterval', $milliseconds);
+    }
+
+    #[Pure]
+    public function withSdkFlavour(string $flavour, string $flavourVersion): self
+    {
+        $result = $this->with('sdkFlavour', $flavour);
+
+        return $result->with('sdkFlavourVersion', $flavourVersion);
     }
 
     #[Pure]
@@ -598,6 +610,7 @@ final class UnleashBuilder
             ->setStaleTtl($this->staleTtl ?? $configuration->getStaleTtl())
             ->setMetricsEnabled($this->metricsEnabled ?? $configuration->isMetricsEnabled())
             ->setMetricsInterval($this->metricsInterval ?? $configuration->getMetricsInterval())
+            ->setSdkFlavour($this->sdkFlavour, $this->sdkFlavourVersion)
             ->setHeaders($this->headers)
             ->setAutoRegistrationEnabled($this->autoregister)
             ->setContextProvider($dependencyContainer->getContextProvider())

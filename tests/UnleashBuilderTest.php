@@ -117,6 +117,22 @@ final class UnleashBuilderTest extends TestCase
         self::assertNotSame($this->instance, $this->instance->withCacheTimeToLive(123));
     }
 
+    public function testWithSdkFlavour()
+    {
+        $instance = $this->instance->withSdkFlavour('test-wrapper', '1.2.3');
+
+        self::assertNotSame($this->instance, $instance);
+
+        $reflection = new ReflectionObject($instance);
+        $sdkFlavourProperty = $reflection->getProperty('sdkFlavour');
+        $sdkFlavourVersionProperty = $reflection->getProperty('sdkFlavourVersion');
+        $sdkFlavourProperty->setAccessible(true);
+        $sdkFlavourVersionProperty->setAccessible(true);
+
+        self::assertSame('test-wrapper', $sdkFlavourProperty->getValue($instance));
+        self::assertSame('1.2.3', $sdkFlavourVersionProperty->getValue($instance));
+    }
+
     public function testWithAppName()
     {
         self::assertNotSame($this->instance, $this->instance->withAppName('test-app'));
@@ -163,6 +179,7 @@ final class UnleashBuilderTest extends TestCase
             ->withAppName('Test App')
             ->withInstanceId('test')
             ->withAutomaticRegistrationEnabled(false)
+            ->withSdkFlavour('symfony', '1.2.3')
             ->build();
         $reflection = new ReflectionObject($instance);
         $repositoryProperty = $reflection->getProperty('repository');
@@ -182,6 +199,8 @@ final class UnleashBuilderTest extends TestCase
         self::assertEquals('test', $configuration->getInstanceId());
         self::assertNotNull($configuration->getCache());
         self::assertIsInt($configuration->getTtl());
+        self::assertSame('symfony', $configuration->getSdkFlavour());
+        self::assertSame('1.2.3', $configuration->getSdkFlavourVersion());
         self::assertCount(8, $strategies);
 
         $requestFactory = $this->newRequestFactory();

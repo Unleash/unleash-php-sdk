@@ -152,6 +152,21 @@ $builder = new UnleashBuilder();
 $builder = UnleashBuilder::create();
 ```
 
+Wrapper SDKs can identify themselves in registration and metrics payloads by setting the SDK flavour:
+
+```php
+<?php
+
+use Unleash\Client\UnleashBuilder;
+
+$unleash = UnleashBuilder::create()
+    ->withAppUrl('https://some-app-url.com')
+    ->withAppName('Some App Name')
+    ->withInstanceId('some-instance-id')
+    ->withSdkFlavour('some-sdk-integration', '1.2.3')
+    ->build();
+```
+
 You can replace various parts of the Unleash SDK with custom implementation using the builder, like custom registration
 service, custom metrics handler and so on.
 
