@@ -58,6 +58,24 @@ final class UnleashConfigurationTest extends TestCase
         self::assertInstanceOf(UnleashContext::class, $instance->getDefaultContext());
     }
 
+    public function testSdkFlavour()
+    {
+        $instance = new UnleashConfiguration('', '', '');
+
+        self::assertNull($instance->getSdkFlavour());
+        self::assertNull($instance->getSdkFlavourVersion());
+        self::assertSame([], $instance->getSdkFlavourMetadata());
+
+        $instance->setSdkFlavour('test-wrapper', '1.2.3');
+
+        self::assertSame('test-wrapper', $instance->getSdkFlavour());
+        self::assertSame('1.2.3', $instance->getSdkFlavourVersion());
+        self::assertSame([
+            'sdkFlavour' => 'test-wrapper',
+            'sdkFlavourVersion' => '1.2.3',
+        ], $instance->getSdkFlavourMetadata());
+    }
+
     public function testGetContextProvider()
     {
         $instance = new UnleashConfiguration('', '', '');

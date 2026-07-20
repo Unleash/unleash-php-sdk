@@ -48,6 +48,8 @@ final class UnleashConfiguration
          * SDK identifier in a format of `unleash-client-<language-or-framework>:<semver>`.
          */
         private string $sdkVersion = Unleash::SDK_NAME . ':' . Unleash::SDK_VERSION,
+        private ?string $sdkFlavour = null,
+        private ?string $sdkFlavourVersion = null,
     ) {
     }
 
@@ -311,5 +313,38 @@ final class UnleashConfiguration
     public function getSdkVersion(): string
     {
         return $this->sdkVersion;
+    }
+
+    public function getSdkFlavour(): ?string
+    {
+        return $this->sdkFlavour;
+    }
+
+    public function getSdkFlavourVersion(): ?string
+    {
+        return $this->sdkFlavourVersion;
+    }
+
+    public function setSdkFlavour(?string $sdkFlavour, ?string $sdkFlavourVersion): self
+    {
+        $this->sdkFlavour = $sdkFlavour;
+        $this->sdkFlavourVersion = $sdkFlavourVersion;
+
+        return $this;
+    }
+
+    /**
+     * @return array{sdkFlavour?: string, sdkFlavourVersion?: string}
+     */
+    public function getSdkFlavourMetadata(): array
+    {
+        if ($this->sdkFlavour === null || $this->sdkFlavourVersion === null) {
+            return [];
+        }
+
+        return [
+            'sdkFlavour' => $this->sdkFlavour,
+            'sdkFlavourVersion' => $this->sdkFlavourVersion,
+        ];
     }
 }

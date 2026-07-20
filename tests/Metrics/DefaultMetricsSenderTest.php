@@ -68,4 +68,20 @@ final class DefaultMetricsSenderTest extends AbstractHttpClientTestCase
         $bucket = new MetricsBucket(new DateTimeImmutable(), new DateTimeImmutable());
         $this->instance->sendMetrics($bucket);
     }
+
+    public function testSendMetricsIncludesSdkFlavour()
+    {
+        $this->configuration->setSdkFlavour('test-wrapper', '3.4.5');
+
+        $this->pushResponse([]);
+        $bucket = new MetricsBucket(new DateTimeImmutable(), new DateTimeImmutable());
+
+        $this->instance->sendMetrics($bucket);
+
+        $request = $this->requestHistory[0]['request'];
+        $payload = json_decode((string) $request->getBody(), true, 512, JSON_THROW_ON_ERROR);
+
+        self::assertSame('test-wrapper', $payload['sdkFlavour']);
+        self::assertSame('3.4.5', $payload['sdkFlavourVersion']);
+    }
 }

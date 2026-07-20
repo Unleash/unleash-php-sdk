@@ -53,21 +53,23 @@ final class DefaultRegistrationService implements RegistrationService
         }
         $legacySdkVersion = $this->sdkName . ':' . $this->sdkVersion;
 
+        $payload = array_merge([
+            'appName' => $this->configuration->getAppName(),
+            'instanceId' => $this->configuration->getInstanceId(),
+            'sdkVersion' => ($legacySdkVersion !== ':') ? $legacySdkVersion : $this->configuration->getSdkVersion(),
+            'strategies' => array_map(fn (StrategyHandler $strategyHandler): string => $strategyHandler->getStrategyName(), $strategyHandlers),
+            'started' => (new DateTimeImmutable())->format('c'),
+            'interval' => $this->configuration->getMetricsInterval(),
+            'platformName' => PHP_SAPI,
+            'platformVersion' => PHP_VERSION,
+            'yggdrasilVersion' => null,
+            'specVersion' => Unleash::SPECIFICATION_VERSION,
+        ], $this->configuration->getSdkFlavourMetadata());
+
         $request = $this->requestFactory
             ->createRequest('POST', (string) Url::appendPath($this->configuration->getUrl(), 'client/register'))
             ->withHeader('Content-Type', 'application/json')
-            ->withBody(new StringStream(json_encode([
-                'appName' => $this->configuration->getAppName(),
-                'instanceId' => $this->configuration->getInstanceId(),
-                'sdkVersion' => ($legacySdkVersion !== ':') ? $legacySdkVersion : $this->configuration->getSdkVersion(),
-                'strategies' => array_map(fn (StrategyHandler $strategyHandler): string => $strategyHandler->getStrategyName(), $strategyHandlers),
-                'started' => new DateTimeImmutable()->format('c'),
-                'interval' => $this->configuration->getMetricsInterval(),
-                'platformName' => PHP_SAPI,
-                'platformVersion' => PHP_VERSION,
-                'yggdrasilVersion' => null,
-                'specVersion' => Unleash::SPECIFICATION_VERSION,
-            ], JSON_THROW_ON_ERROR)));
+            ->withBody(new StringStream(json_encode($payload, JSON_THROW_ON_ERROR)));
         foreach ($this->configuration->getHeaders() as $name => $value) {
             $request = $request->withHeader($name, $value);
         }
