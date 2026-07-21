@@ -5,18 +5,30 @@ namespace Unleash\Client\Helper;
 use Override;
 use Stringable;
 
-final readonly class Url implements Stringable
+final class Url
 {
+    /**
+     * @readonly
+     */
+    private string $url;
+    /**
+     * @readonly
+     */
+    private ?string $namePrefix = null;
+    /**
+     * @var array<string>|null
+     * @readonly
+     */
+    private ?array $tags = null;
     /**
      * @param array<string>|null $tags
      */
-    public function __construct(
-        private string $url,
-        private ?string $namePrefix = null,
-        private ?array $tags = null,
-    ) {
+    public function __construct(string $url, ?string $namePrefix = null, ?array $tags = null)
+    {
+        $this->url = $url;
+        $this->namePrefix = $namePrefix;
+        $this->tags = $tags;
     }
-
     #[Override]
     public function __toString(): string
     {
@@ -38,13 +50,12 @@ final readonly class Url implements Stringable
             }
         }
 
-        if (str_ends_with($url, '&') || str_ends_with($url, '?')) {
-            $url = substr($url, 0, -1);
+        if (substr_compare($url, '&', -strlen('&')) === 0 || substr_compare($url, '?', -strlen('?')) === 0) {
+            $url = (string) substr($url, 0, -1);
         }
 
         return $url;
     }
-
     public static function appendPath(string $url, string $path): self
     {
         if (!$path) {
@@ -54,19 +65,18 @@ final readonly class Url implements Stringable
         $parts = parse_url($url);
         assert(is_array($parts));
 
-        if (!str_starts_with($path, '/')) {
+        if (strncmp($path, '/', strlen('/')) !== 0) {
             $path = "/{$path}";
         }
         $parts['path'] ??= '';
-        if (str_ends_with($parts['path'], '/')) {
-            $parts['path'] = substr($parts['path'], 0, -1);
+        if (substr_compare($parts['path'], '/', -strlen('/')) === 0) {
+            $parts['path'] = (string) substr($parts['path'], 0, -1);
         }
 
         $parts['path'] .= $path;
 
         return self::buildUrl($parts);
     }
-
     /**
      * @param array<string, mixed> $parts
      */
