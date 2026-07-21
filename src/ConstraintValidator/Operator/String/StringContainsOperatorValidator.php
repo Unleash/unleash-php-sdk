@@ -9,11 +9,14 @@ use Override;
  */
 final class StringContainsOperatorValidator extends AbstractStringOperatorValidator
 {
+    /**
+     * @param mixed[]|string $searchInValue
+     */
     #[Override]
-    protected function validate(string $currentValue, array|string $searchInValue): bool
+    protected function validate(string $currentValue, $searchInValue): bool
     {
         assert(is_string($searchInValue));
 
-        return str_contains($currentValue, $searchInValue);
+        return strpos($currentValue, $searchInValue) !== false;
     }
 }
