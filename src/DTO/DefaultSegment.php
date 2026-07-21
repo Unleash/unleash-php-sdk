@@ -4,13 +4,19 @@ namespace Unleash\Client\DTO;
 
 use Override;
 
-final readonly class DefaultSegment implements Segment
+final class DefaultSegment implements Segment
 {
     /**
      * @param array<Constraint> $constraints
      */
     public function __construct(
+        /**
+         * @readonly
+         */
         private int $id,
+        /**
+         * @readonly
+         */
         private array $constraints,
     ) {
     }
