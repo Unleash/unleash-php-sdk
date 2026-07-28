@@ -81,7 +81,7 @@ final class DefaultMetricsSenderTest extends AbstractHttpClientTestCase
         $request = $this->requestHistory[0]['request'];
         $payload = json_decode((string) $request->getBody(), true, 512, JSON_THROW_ON_ERROR);
 
-        self::assertSame('test-wrapper', $payload['sdkFlavour']);
-        self::assertSame('3.4.5', $payload['sdkFlavourVersion']);
+        self::assertSame('test-wrapper', $payload['sdkFlavor']);
+        self::assertSame('3.4.5', $payload['sdkFlavorVersion']);
     }
 }

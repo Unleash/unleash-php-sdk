@@ -334,7 +334,7 @@ final class UnleashConfiguration
     }
 
     /**
-     * @return array{sdkFlavour?: string, sdkFlavourVersion?: string}
+     * @return array{sdkFlavor?: string, sdkFlavorVersion?: string}
      */
     public function getSdkFlavourMetadata(): array
     {
@@ -343,8 +343,8 @@ final class UnleashConfiguration
         }
 
         return [
-            'sdkFlavour' => $this->sdkFlavour,
-            'sdkFlavourVersion' => $this->sdkFlavourVersion,
+            'sdkFlavor' => $this->sdkFlavour,
+            'sdkFlavorVersion' => $this->sdkFlavourVersion,
         ];
     }
 }

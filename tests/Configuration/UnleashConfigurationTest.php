@@ -71,8 +71,8 @@ final class UnleashConfigurationTest extends TestCase
         self::assertSame('test-wrapper', $instance->getSdkFlavour());
         self::assertSame('1.2.3', $instance->getSdkFlavourVersion());
         self::assertSame([
-            'sdkFlavour' => 'test-wrapper',
-            'sdkFlavourVersion' => '1.2.3',
+            'sdkFlavor' => 'test-wrapper',
+            'sdkFlavorVersion' => '1.2.3',
         ], $instance->getSdkFlavourMetadata());
     }
 
