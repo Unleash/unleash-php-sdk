@@ -10,14 +10,23 @@ use Unleash\Client\DTO\Variant;
 /**
  * @internal
  */
-final readonly class UnresolvedFeatureDependency implements FeatureDependency
+final class UnresolvedFeatureDependency implements FeatureDependency
 {
     /**
      * @param array<Variant>|null $requiredVariants
      */
     public function __construct(
+        /**
+         * @readonly
+         */
         private Feature $feature,
+        /**
+         * @readonly
+         */
         private bool $expectedState,
+        /**
+         * @readonly
+         */
         private ?array $requiredVariants,
     ) {
     }
