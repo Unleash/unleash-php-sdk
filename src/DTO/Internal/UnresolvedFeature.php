@@ -9,11 +9,16 @@ use Unleash\Client\DTO\FeatureDependency;
 /**
  * @internal
  */
-final readonly class UnresolvedFeature implements Feature
+final class UnresolvedFeature implements Feature
 {
-    public function __construct(
-        private string $name,
-    ) {
+    /**
+     * @readonly
+     * @var string
+     */
+    private $name;
+    public function __construct(string $name)
+    {
+        $this->name = $name;
     }
 
     #[Override]
