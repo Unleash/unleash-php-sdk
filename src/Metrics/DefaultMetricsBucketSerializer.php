@@ -7,7 +7,7 @@ use Override;
 use Unleash\Client\DTO\DefaultFeature;
 use Unleash\Client\DTO\DefaultVariant;
 
-final readonly class DefaultMetricsBucketSerializer implements MetricsBucketSerializer
+final class DefaultMetricsBucketSerializer implements MetricsBucketSerializer
 {
     #[Override]
     public function serialize(MetricsBucket $bucket): string
@@ -17,14 +17,14 @@ final readonly class DefaultMetricsBucketSerializer implements MetricsBucketSeri
             $serialized .= ';';
         }
         foreach ($bucket->getToggles() as $toggle) {
-            $variantName = $toggle->getVariant()?->getName() ?? '~';
+            $variantName = (($nullsafeVariable1 = $toggle->getVariant()) ? $nullsafeVariable1->getName() : null) ?? '~';
             $serialized .= "{$toggle->getFeature()->getName()}:";
             $serialized .= $toggle->isSuccess() ? '1' : '0';
             $serialized .= ":{$variantName},";
         }
-        $serialized = substr($serialized, 0, -1);
+        $serialized = (string) substr($serialized, 0, -1);
         $serialized .= ';';
-        $serialized .= $bucket->getEndDate()?->getTimestamp() ?? '~';
+        $serialized .= (($nullsafeVariable2 = $bucket->getEndDate()) ? $nullsafeVariable2->getTimestamp() : null) ?? '~';
 
         return $serialized;
     }
@@ -44,9 +44,9 @@ final readonly class DefaultMetricsBucketSerializer implements MetricsBucketSeri
             $enabled = $enabled === '1';
             $variant = $variant === '~' ? null : new DefaultVariant($variant, true);
             $bucket->addToggle(new MetricsBucketToggle(
-                feature: new DefaultFeature(name: $name, enabled: true, strategies: []),
-                success: $enabled,
-                variant: $variant,
+                new DefaultFeature($name, true, []),
+                $enabled,
+                $variant
             ));
         }
 
