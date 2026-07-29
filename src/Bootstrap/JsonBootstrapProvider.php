@@ -6,11 +6,16 @@ use JsonException;
 use Override;
 use Unleash\Client\Exception\InvalidValueException;
 
-final readonly class JsonBootstrapProvider implements BootstrapProvider
+final class JsonBootstrapProvider implements BootstrapProvider
 {
-    public function __construct(
-        private string $json,
-    ) {
+    /**
+     * @readonly
+     * @var string
+     */
+    private $json;
+    public function __construct(string $json)
+    {
+        $this->json = $json;
     }
 
     /**
@@ -28,7 +33,7 @@ final readonly class JsonBootstrapProvider implements BootstrapProvider
         if (!is_array($result)) {
             throw new InvalidValueException(sprintf(
                 'The provided json string must be a valid json object, %s given.',
-                gettype($result),
+                gettype($result)
             ));
         }
 
