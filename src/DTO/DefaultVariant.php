@@ -7,19 +7,40 @@ use JetBrains\PhpStorm\ExpectedValues;
 use Override;
 use Unleash\Client\Enum\Stickiness;
 
-final readonly class DefaultVariant implements Variant
+final class DefaultVariant implements Variant
 {
     /**
      * @param array<VariantOverride> $overrides
      */
     public function __construct(
+        /**
+         * @readonly
+         */
         private string $name,
+        /**
+         * @readonly
+         */
         private bool $enabled,
+        /**
+         * @readonly
+         */
         private int $weight = 0,
+        /**
+         * @readonly
+         */
         #[ExpectedValues(valuesFromClass: Stickiness::class)]
         private string $stickiness = Stickiness::DEFAULT,
+        /**
+         * @readonly
+         */
         private ?VariantPayload $payload = null,
+        /**
+         * @readonly
+         */
         private ?array $overrides = null,
+        /**
+         * @readonly
+         */
         private bool $featureEnabled = false,
     ) {
     }
