@@ -68,6 +68,36 @@ final class ConstraintTest extends AbstractHttpClientTestCase
         self::assertFalse($this->instance->isEnabled('test', $context));
     }
 
+    public function testSemVerVersionDisregardsMetadata()
+    {
+        $this->pushResponse([
+            'version' => 1,
+            'features' => [
+                [
+                    'name' => 'test',
+                    'description' => '',
+                    'enabled' => true,
+                    'strategies' => [
+                        [
+                            'name' => 'default',
+                            'constraints' => [
+                                [
+                                    'contextName' => 'version',
+                                    'operator' => 'SEMVER_EQ',
+                                    'value' => '1.5.5+build.322',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $context = (new UnleashContext())->setCustomProperty('version', '1.5.5');
+
+        self::assertTrue($this->instance->isEnabled('test', $context));
+    }
+
     public function testInvalidOperator()
     {
         $this->pushResponse([
