@@ -18,7 +18,9 @@ use Unleash\Client\ConstraintValidator\Operator\String\StringEndsWithOperatorVal
 use Unleash\Client\ConstraintValidator\Operator\String\StringStartsWithOperatorValidator;
 use Unleash\Client\ConstraintValidator\Operator\Version\VersionEqualsOperatorValidator;
 use Unleash\Client\ConstraintValidator\Operator\Version\VersionGreaterThanOperatorValidator;
+use Unleash\Client\ConstraintValidator\Operator\Version\VersionGreaterThanOrEqualsOperatorValidator;
 use Unleash\Client\ConstraintValidator\Operator\Version\VersionLowerThanOperatorValidator;
+use Unleash\Client\ConstraintValidator\Operator\Version\VersionLowerThanOrEqualsOperatorValidator;
 use Unleash\Client\DTO\Constraint;
 use Unleash\Client\Enum\ConstraintOperator;
 use Unleash\Client\Exception\OperatorValidatorException;
@@ -107,6 +109,8 @@ final class DefaultConstraintValidator implements ConstraintValidator
             ConstraintOperator::VERSION_EQUALS => new VersionEqualsOperatorValidator(),
             ConstraintOperator::VERSION_GREATER_THAN => new VersionGreaterThanOperatorValidator(),
             ConstraintOperator::VERSION_LOWER_THAN => new VersionLowerThanOperatorValidator(),
+            ConstraintOperator::VERSION_LOWER_THAN_OR_EQUALS => new VersionLowerThanOrEqualsOperatorValidator(),
+            ConstraintOperator::VERSION_GREATER_THAN_OR_EQUALS => new VersionGreaterThanOrEqualsOperatorValidator(),
 
             default => fn () => false,
         };

@@ -248,6 +248,126 @@ final class ConstraintTest extends AbstractHttpClientTestCase
         self::assertFalse($this->instance->isEnabled('test', $context));
     }
 
+    public function testVersionGTEIsGreaterThan()
+    {
+        $this->pushResponse([
+            'version' => 1,
+            'features' => [
+                [
+                    'name' => 'test',
+                    'description' => '',
+                    'enabled' => true,
+                    'strategies' => [
+                        [
+                            'name' => 'default',
+                            'constraints' => [
+                                [
+                                    'contextName' => 'version',
+                                    'operator' => 'SEMVER_GTE',
+                                    'value' => '1.5.5+build.322',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $context = (new UnleashContext())->setCustomProperty('version', '1.5.6');
+
+        self::assertTrue($this->instance->isEnabled('test', $context));
+    }
+
+    public function testVersionGTENotGreaterOrEqual()
+    {
+        $this->pushResponse([
+            'version' => 1,
+            'features' => [
+                [
+                    'name' => 'test',
+                    'description' => '',
+                    'enabled' => true,
+                    'strategies' => [
+                        [
+                            'name' => 'default',
+                            'constraints' => [
+                                [
+                                    'contextName' => 'version',
+                                    'operator' => 'SEMVER_GTE',
+                                    'value' => '1.5.5',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $context = (new UnleashContext())->setCustomProperty('version', '1.5.4+build.322');
+
+        self::assertFalse($this->instance->isEnabled('test', $context));
+    }
+
+    public function testVersionLTEIsLessThan()
+    {
+        $this->pushResponse([
+            'version' => 1,
+            'features' => [
+                [
+                    'name' => 'test',
+                    'description' => '',
+                    'enabled' => true,
+                    'strategies' => [
+                        [
+                            'name' => 'default',
+                            'constraints' => [
+                                [
+                                    'contextName' => 'version',
+                                    'operator' => 'SEMVER_LTE',
+                                    'value' => '1.5.5',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $context = (new UnleashContext())->setCustomProperty('version', '1.5.4+build.322');
+
+        self::assertTrue($this->instance->isEnabled('test', $context));
+    }
+
+    public function testVersionLTENotLesserOrEqual()
+    {
+        $this->pushResponse([
+            'version' => 1,
+            'features' => [
+                [
+                    'name' => 'test',
+                    'description' => '',
+                    'enabled' => true,
+                    'strategies' => [
+                        [
+                            'name' => 'default',
+                            'constraints' => [
+                                [
+                                    'contextName' => 'version',
+                                    'operator' => 'SEMVER_LTE',
+                                    'value' => '1.5.5',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $context = (new UnleashContext())->setCustomProperty('version', '1.5.6+build.322');
+
+        self::assertFalse($this->instance->isEnabled('test', $context));
+    }
+
     public function testInvalidOperator()
     {
         $this->pushResponse([

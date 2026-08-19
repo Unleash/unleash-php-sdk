@@ -47,4 +47,8 @@ final class ConstraintOperator
     public const string VERSION_GREATER_THAN = 'SEMVER_GT';
 
     public const string VERSION_LOWER_THAN = 'SEMVER_LT';
+
+    public const string VERSION_GREATER_THAN_OR_EQUALS = 'SEMVER_GTE';
+
+    public const string VERSION_LOWER_THAN_OR_EQUALS = 'SEMVER_LTE';
 }
