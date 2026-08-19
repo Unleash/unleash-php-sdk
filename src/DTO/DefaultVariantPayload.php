@@ -10,16 +10,28 @@ use LogicException;
 use Override;
 use Unleash\Client\Enum\VariantPayloadType;
 
-final readonly class DefaultVariantPayload implements VariantPayload
+final class DefaultVariantPayload implements VariantPayload
 {
+    /**
+     * @readonly
+     * @var string
+     */
+    private $type;
+    /**
+     * @readonly
+     * @var string
+     */
+    private $value;
     public function __construct(
-        #[ExpectedValues(valuesFromClass: VariantPayloadType::class)]
-        private string $type,
-        private string $value,
-    ) {
+        #[\JetBrains\PhpStorm\ExpectedValues(valuesFromClass: \Unleash\Client\Enum\VariantPayloadType::class)]
+        string $type,
+        string $value
+    )
+    {
+        $this->type = $type;
+        $this->value = $value;
     }
 
-    #[ExpectedValues(valuesFromClass: VariantPayloadType::class)]
     #[Override]
     public function getType(): string
     {
@@ -56,8 +68,6 @@ final readonly class DefaultVariantPayload implements VariantPayload
     /**
      * @return array<string>
      */
-    #[Pure]
-    #[ArrayShape(['type' => 'string', 'value' => 'string'])]
     #[Override]
     public function jsonSerialize(): array
     {
