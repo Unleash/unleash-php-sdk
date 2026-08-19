@@ -14,6 +14,10 @@ final class VersionEqualsOperatorValidator extends AbstractVersionOperatorValida
     {
         assert(is_string($searchInValue));
 
-        return version_compare($currentValue, $searchInValue, 'eq');
+        return version_compare(
+            $this->stripBuildMetadata($currentValue),
+            $this->stripBuildMetadata($searchInValue),
+            'eq'
+        );
     }
 }

@@ -14,6 +14,10 @@ final class VersionLowerThanOperatorValidator extends AbstractVersionOperatorVal
     {
         assert(is_string($searchInValue));
 
-        return version_compare($currentValue, $searchInValue, 'lt');
+        return version_compare(
+            $this->stripBuildMetadata($currentValue),
+            $this->stripBuildMetadata($searchInValue),
+            'lt'
+        );
     }
 }
