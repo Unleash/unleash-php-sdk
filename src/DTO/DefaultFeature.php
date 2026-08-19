@@ -4,21 +4,48 @@ namespace Unleash\Client\DTO;
 
 use Override;
 
-final readonly class DefaultFeature implements Feature
+final class DefaultFeature implements Feature
 {
+    /**
+     * @readonly
+     */
+    private string $name;
+    /**
+     * @readonly
+     */
+    private bool $enabled;
+    /**
+     * @var iterable<Strategy>
+     * @readonly
+     */
+    private iterable $strategies;
+    /**
+     * @var array<Variant>
+     * @readonly
+     */
+    private array $variants = [];
+    /**
+     * @readonly
+     */
+    private bool $impressionData = false;
+    /**
+     * @var array<FeatureDependency>
+     * @readonly
+     */
+    private array $dependencies = [];
     /**
      * @param iterable<Strategy>       $strategies
      * @param array<Variant>           $variants
      * @param array<FeatureDependency> $dependencies
      */
-    public function __construct(
-        private string $name,
-        private bool $enabled,
-        private iterable $strategies,
-        private array $variants = [],
-        private bool $impressionData = false,
-        private array $dependencies = [],
-    ) {
+    public function __construct(string $name, bool $enabled, iterable $strategies, array $variants = [], bool $impressionData = false, array $dependencies = [])
+    {
+        $this->name = $name;
+        $this->enabled = $enabled;
+        $this->strategies = $strategies;
+        $this->variants = $variants;
+        $this->impressionData = $impressionData;
+        $this->dependencies = $dependencies;
     }
 
     #[Override]
