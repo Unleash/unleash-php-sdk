@@ -68,7 +68,7 @@ final class ConstraintTest extends AbstractHttpClientTestCase
         self::assertFalse($this->instance->isEnabled('test', $context));
     }
 
-    public function testSemVerVersionDisregardsMetadata()
+    public function testSemVerVersionDisregardsConstraintMetadata()
     {
         $this->pushResponse([
             'version' => 1,
@@ -96,6 +96,156 @@ final class ConstraintTest extends AbstractHttpClientTestCase
         $context = (new UnleashContext())->setCustomProperty('version', '1.5.5');
 
         self::assertTrue($this->instance->isEnabled('test', $context));
+    }
+
+    public function testSemVerVersionDisregardsContextMetadata()
+    {
+        $this->pushResponse([
+            'version' => 1,
+            'features' => [
+                [
+                    'name' => 'test',
+                    'description' => '',
+                    'enabled' => true,
+                    'strategies' => [
+                        [
+                            'name' => 'default',
+                            'constraints' => [
+                                [
+                                    'contextName' => 'version',
+                                    'operator' => 'SEMVER_EQ',
+                                    'value' => '1.5.5',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $context = (new UnleashContext())->setCustomProperty('version', '1.5.5+build.322');
+
+        self::assertTrue($this->instance->isEnabled('test', $context));
+    }
+
+    public function testSemVerVersionAllMetadataAreEqual()
+    {
+        $this->pushResponse([
+            'version' => 1,
+            'features' => [
+                [
+                    'name' => 'test',
+                    'description' => '',
+                    'enabled' => true,
+                    'strategies' => [
+                        [
+                            'name' => 'default',
+                            'constraints' => [
+                                [
+                                    'contextName' => 'version',
+                                    'operator' => 'SEMVER_EQ',
+                                    'value' => '1.5.5+metadata',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $context = (new UnleashContext())->setCustomProperty('version', '1.5.5+build.322');
+
+        self::assertTrue($this->instance->isEnabled('test', $context));
+    }
+
+    public function testSemVerVersionPreReleaseWithMetadataAreEqual()
+    {
+        $this->pushResponse([
+            'version' => 1,
+            'features' => [
+                [
+                    'name' => 'test',
+                    'description' => '',
+                    'enabled' => true,
+                    'strategies' => [
+                        [
+                            'name' => 'default',
+                            'constraints' => [
+                                [
+                                    'contextName' => 'version',
+                                    'operator' => 'SEMVER_EQ',
+                                    'value' => '1.5.5-alpha.1+metadata',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $context = (new UnleashContext())->setCustomProperty('version', '1.5.5-alpha.1+build.322');
+
+        self::assertTrue($this->instance->isEnabled('test', $context));
+    }
+
+    public function testSemVerVersionMetadataNotGreaterThan()
+    {
+        $this->pushResponse([
+            'version' => 1,
+            'features' => [
+                [
+                    'name' => 'test',
+                    'description' => '',
+                    'enabled' => true,
+                    'strategies' => [
+                        [
+                            'name' => 'default',
+                            'constraints' => [
+                                [
+                                    'contextName' => 'version',
+                                    'operator' => 'SEMVER_GT',
+                                    'value' => '1.5.5',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $context = (new UnleashContext())->setCustomProperty('version', '1.5.5+build.322');
+
+        self::assertFalse($this->instance->isEnabled('test', $context));
+    }
+
+    public function testSemVerVersionNotLesserThanMetadata()
+    {
+        $this->pushResponse([
+            'version' => 1,
+            'features' => [
+                [
+                    'name' => 'test',
+                    'description' => '',
+                    'enabled' => true,
+                    'strategies' => [
+                        [
+                            'name' => 'default',
+                            'constraints' => [
+                                [
+                                    'contextName' => 'version',
+                                    'operator' => 'SEMVER_LT',
+                                    'value' => '1.5.5+build.322',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $context = (new UnleashContext())->setCustomProperty('version', '1.5.5');
+
+        self::assertFalse($this->instance->isEnabled('test', $context));
     }
 
     public function testInvalidOperator()
