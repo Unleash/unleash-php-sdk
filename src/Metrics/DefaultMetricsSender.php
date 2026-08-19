@@ -10,11 +10,20 @@ use Unleash\Client\Configuration\UnleashConfiguration;
 use Unleash\Client\Helper\StringStream;
 use Unleash\Client\Unleash;
 
-final readonly class DefaultMetricsSender implements MetricsSender
+final class DefaultMetricsSender implements MetricsSender
 {
     public function __construct(
+        /**
+         * @readonly
+         */
         private ClientInterface $httpClient,
+        /**
+         * @readonly
+         */
         private RequestFactoryInterface $requestFactory,
+        /**
+         * @readonly
+         */
         private UnleashConfiguration $configuration,
     ) {
     }

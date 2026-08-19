@@ -4,14 +4,23 @@ namespace Unleash\Client\DTO;
 
 use Override;
 
-final readonly class DefaultFeatureDependency implements FeatureDependency
+final class DefaultFeatureDependency implements FeatureDependency
 {
     /**
      * @param array<Variant>|null $requiredVariants
      */
     public function __construct(
+        /**
+         * @readonly
+         */
         private ?Feature $feature,
+        /**
+         * @readonly
+         */
         private bool $expectedState,
+        /**
+         * @readonly
+         */
         private ?array $requiredVariants,
     ) {
     }
