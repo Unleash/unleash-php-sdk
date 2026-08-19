@@ -6,9 +6,12 @@ use JsonException;
 use Override;
 use Unleash\Client\Exception\InvalidValueException;
 
-final readonly class JsonBootstrapProvider implements BootstrapProvider
+final class JsonBootstrapProvider implements BootstrapProvider
 {
     public function __construct(
+        /**
+         * @readonly
+         */
         private string $json,
     ) {
     }

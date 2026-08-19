@@ -5,14 +5,23 @@ namespace Unleash\Client\Helper;
 use Override;
 use Stringable;
 
-final readonly class Url implements Stringable
+final class Url implements Stringable
 {
     /**
      * @param array<string>|null $tags
      */
     public function __construct(
+        /**
+         * @readonly
+         */
         private string $url,
+        /**
+         * @readonly
+         */
         private ?string $namePrefix = null,
+        /**
+         * @readonly
+         */
         private ?array $tags = null,
     ) {
     }
