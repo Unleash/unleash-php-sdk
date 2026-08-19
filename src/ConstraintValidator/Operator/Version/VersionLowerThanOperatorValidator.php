@@ -9,8 +9,11 @@ use Override;
  */
 final class VersionLowerThanOperatorValidator extends AbstractVersionOperatorValidator
 {
+    /**
+     * @param mixed[]|string $searchInValue
+     */
     #[Override]
-    protected function validate(string $currentValue, array|string $searchInValue): bool
+    protected function validate(string $currentValue, $searchInValue): bool
     {
         assert(is_string($searchInValue));
 
