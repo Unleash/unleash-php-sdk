@@ -18,8 +18,8 @@ use Unleash\Client\ConstraintValidator\Operator\String\StringEndsWithOperatorVal
 use Unleash\Client\ConstraintValidator\Operator\String\StringStartsWithOperatorValidator;
 use Unleash\Client\ConstraintValidator\Operator\Version\VersionEqualsOperatorValidator;
 use Unleash\Client\ConstraintValidator\Operator\Version\VersionGreaterThanOperatorValidator;
-use Unleash\Client\ConstraintValidator\Operator\Version\VersionLowerThanOperatorValidator;
 use Unleash\Client\ConstraintValidator\Operator\Version\VersionGreaterThanOrEqualsOperatorValidator;
+use Unleash\Client\ConstraintValidator\Operator\Version\VersionLowerThanOperatorValidator;
 use Unleash\Client\ConstraintValidator\Operator\Version\VersionLowerThanOrEqualsOperatorValidator;
 use Unleash\Client\DTO\Constraint;
 use Unleash\Client\Enum\ConstraintOperator;
