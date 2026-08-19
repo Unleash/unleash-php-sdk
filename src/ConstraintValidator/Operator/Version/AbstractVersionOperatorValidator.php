@@ -17,4 +17,11 @@ abstract class AbstractVersionOperatorValidator extends AbstractOperatorValidato
     {
         return is_string($values) && preg_match(self::REGEX, $values);
     }
+
+    protected function stripBuildMetadata(string $version): string
+    {
+        $position = strpos($version, '+');
+
+        return $position === false ? $version : substr($version, 0, $position);
+    }
 }
