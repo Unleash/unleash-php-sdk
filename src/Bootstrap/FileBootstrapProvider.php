@@ -10,11 +10,19 @@ use SplFileInfo;
 use Throwable;
 use Unleash\Client\Exception\InvalidValueException;
 
-final readonly class FileBootstrapProvider implements BootstrapProvider
+final class FileBootstrapProvider implements BootstrapProvider
 {
-    public function __construct(
-        private string|SplFileInfo $file,
-    ) {
+    /**
+     * @readonly
+     * @var string|\SplFileInfo
+     */
+    private $file;
+    /**
+     * @param string|\SplFileInfo $file
+     */
+    public function __construct($file)
+    {
+        $this->file = $file;
     }
 
     /**
@@ -37,7 +45,7 @@ final readonly class FileBootstrapProvider implements BootstrapProvider
             throw new RuntimeException(sprintf(
                 "Failed to read the contents of file '%s': %s",
                 $filePath,
-                $error['message'] ?? 'Unknown error',
+                $error['message'] ?? 'Unknown error'
             ));
         }
 
@@ -49,14 +57,17 @@ final readonly class FileBootstrapProvider implements BootstrapProvider
             throw new InvalidValueException(sprintf(
                 "The file '%s' must contain a valid json object, '%s' given.",
                 $filePath,
-                gettype($result),
+                gettype($result)
             ));
         }
 
         return $result;
     }
 
-    private function getFilePath(string|SplFileInfo $file): string
+    /**
+     * @param string|\SplFileInfo $file
+     */
+    private function getFilePath($file): string
     {
         if ($file instanceof SplFileInfo) {
             if ($path = $file->getRealPath()) {
@@ -73,7 +84,7 @@ final readonly class FileBootstrapProvider implements BootstrapProvider
         if (!fnmatch('*://*', $path)) {
             $path = "file://{$path}";
         }
-        if (!str_starts_with($path, 'file://')) {
+        if (strncmp($path, 'file://', strlen('file://')) !== 0) {
             return null;
         }
 

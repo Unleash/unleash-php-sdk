@@ -14,13 +14,28 @@ use Unleash\Client\DTO\DefaultProxyFeature;
 use Unleash\Client\DTO\ProxyFeature;
 use Unleash\Client\Helper\Url;
 
-final readonly class DefaultUnleashProxyRepository implements ProxyRepository
+final class DefaultUnleashProxyRepository implements ProxyRepository
 {
-    public function __construct(
-        private UnleashConfiguration $configuration,
-        private ClientInterface $httpClient,
-        private RequestFactoryInterface $requestFactory
-    ) {
+    /**
+     * @readonly
+     * @var \Unleash\Client\Configuration\UnleashConfiguration
+     */
+    private $configuration;
+    /**
+     * @readonly
+     * @var \Psr\Http\Client\ClientInterface
+     */
+    private $httpClient;
+    /**
+     * @readonly
+     * @var \Psr\Http\Message\RequestFactoryInterface
+     */
+    private $requestFactory;
+    public function __construct(UnleashConfiguration $configuration, ClientInterface $httpClient, RequestFactoryInterface $requestFactory)
+    {
+        $this->configuration = $configuration;
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
     }
 
     #[Override]
@@ -47,7 +62,7 @@ final readonly class DefaultUnleashProxyRepository implements ProxyRepository
             }
         }
 
-        $context ??= new UnleashContext();
+        $context = $context ?? new UnleashContext();
         $featureUrl = (string) Url::appendPath($this->configuration->getUrl(), 'frontend/features/' . $featureName);
         $url = $this->addQuery($featureUrl, $this->contextToQueryString($context));
 
@@ -102,8 +117,12 @@ final readonly class DefaultUnleashProxyRepository implements ProxyRepository
             'remoteAddress' => $context->getIpAddress(),
         ];
 
-        $values = array_filter($values, fn (?string $value) => $value !== null);
-        $properties = array_filter($context->getCustomProperties(), fn (?string $value) => $value !== null);
+        $values = array_filter($values, function (?string $value) {
+            return $value !== null;
+        });
+        $properties = array_filter($context->getCustomProperties(), function (?string $value) {
+            return $value !== null;
+        });
 
         foreach ($values as $key => $value) {
             $query[$key] = $value;
