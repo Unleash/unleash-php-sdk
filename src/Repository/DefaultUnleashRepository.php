@@ -537,7 +537,12 @@ final readonly class DefaultUnleashRepository implements UnleashRepository
                     }
                     $this->setLastValidState($rawData);
                 } else {
-                    throw new HttpResponseException("Invalid status code: '{$response->getStatusCode()}'");
+                    $message = "Invalid status code: '{$response->getStatusCode()}'";
+                    if ($response->hasHeader('Location')) {
+                        $message .= ", Location: {$response->getHeaderLine('Location')}";
+                    }
+
+                    throw new HttpResponseException($message);
                 }
             } catch (Exception $exception) {
                 $this->configuration->getEventDispatcher()->dispatch(
