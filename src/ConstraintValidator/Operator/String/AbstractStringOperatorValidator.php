@@ -10,8 +10,11 @@ use Unleash\Client\ConstraintValidator\Operator\AbstractOperatorValidator;
  */
 abstract class AbstractStringOperatorValidator extends AbstractOperatorValidator
 {
+    /**
+     * @param mixed[]|string $values
+     */
     #[Override]
-    protected function acceptsValues(array|string $values): bool
+    protected function acceptsValues($values): bool
     {
         return is_string($values);
     }
