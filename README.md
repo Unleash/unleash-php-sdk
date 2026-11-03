@@ -306,7 +306,7 @@ cache handler will be created automatically, otherwise you need to provide some 
 <?php
 
 use Cache\Adapter\Filesystem\FilesystemCachePool;
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Filesystem;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
@@ -328,7 +328,7 @@ $builder = UnleashBuilder::create()
     ->withRequestFactory(new HttpFactory())
     ->withCacheHandler(new FilesystemCachePool( // example with using cache/filesystem-adapter
         new Filesystem(
-            new Local(sys_get_temp_dir()),
+            new LocalFilesystemAdapter(sys_get_temp_dir()),
         ),
     ), 30) // the second parameter is time to live in seconds
     ->withCacheTimeToLive(60) // you can also set the cache time to live separately
@@ -419,14 +419,14 @@ Cache implementations supported out of the box (meaning you don't need to config
 <?php
 
 use Cache\Adapter\Filesystem\FilesystemCachePool;
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Filesystem;
 use Unleash\Client\UnleashBuilder;
 
 $builder = UnleashBuilder::create()
     ->withCacheHandler(new FilesystemCachePool( // example with using cache/filesystem-adapter
         new Filesystem(
-            new Local(sys_get_temp_dir()),
+            new LocalFilesystemAdapter(sys_get_temp_dir()),
         ),
     ))
     ->withCacheTimeToLive(120)
@@ -446,7 +446,7 @@ implementation for stale cache, the same instance as for standard cache is used.
 <?php
 
 use Cache\Adapter\Filesystem\FilesystemCachePool;
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Filesystem;
 use Unleash\Client\UnleashBuilder;
 use Symfony\Component\Cache\Psr16Cache;
@@ -455,7 +455,7 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
 $builder = UnleashBuilder::create()
     ->withCacheHandler(new FilesystemCachePool( // example with using cache/filesystem-adapter
         new Filesystem(
-            new Local(sys_get_temp_dir()),
+            new LocalFilesystemAdapter(sys_get_temp_dir()),
         ),
     ))
     ->withStaleCacheHandler(new Psr16Cache(new ArrayAdapter()))
