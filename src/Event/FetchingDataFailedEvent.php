@@ -7,7 +7,10 @@ use Exception;
 final class FetchingDataFailedEvent extends AbstractEvent
 {
     public function __construct(
-        private readonly Exception $exception,
+        /**
+         * @readonly
+         */
+        private Exception $exception,
     ) {
     }
 

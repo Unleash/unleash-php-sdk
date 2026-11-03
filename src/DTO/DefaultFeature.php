@@ -4,7 +4,7 @@ namespace Unleash\Client\DTO;
 
 use Override;
 
-final readonly class DefaultFeature implements Feature
+final class DefaultFeature implements Feature
 {
     /**
      * @param iterable<Strategy>       $strategies
@@ -12,11 +12,29 @@ final readonly class DefaultFeature implements Feature
      * @param array<FeatureDependency> $dependencies
      */
     public function __construct(
+        /**
+         * @readonly
+         */
         private string $name,
+        /**
+         * @readonly
+         */
         private bool $enabled,
+        /**
+         * @readonly
+         */
         private iterable $strategies,
+        /**
+         * @readonly
+         */
         private array $variants = [],
+        /**
+         * @readonly
+         */
         private bool $impressionData = false,
+        /**
+         * @readonly
+         */
         private array $dependencies = [],
     ) {
     }

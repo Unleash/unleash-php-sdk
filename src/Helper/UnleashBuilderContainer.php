@@ -17,21 +17,60 @@ use Unleash\Client\Stickiness\StickinessCalculator;
 /**
  * @internal
  */
-final readonly class UnleashBuilderContainer
+final class UnleashBuilderContainer
 {
     public function __construct(
+        /**
+         * @readonly
+         */
         private CacheInterface $cache,
+        /**
+         * @readonly
+         */
         private CacheInterface $staleCache,
+        /**
+         * @readonly
+         */
         private ClientInterface $httpClient,
+        /**
+         * @readonly
+         */
         private ?MetricsSender $metricsSender,
+        /**
+         * @readonly
+         */
         private CacheInterface $metricsCache,
+        /**
+         * @readonly
+         */
         private RequestFactoryInterface $requestFactory,
+        /**
+         * @readonly
+         */
         private StickinessCalculator $stickinessCalculator,
+        /**
+         * @readonly
+         */
         private ?UnleashConfiguration $configuration,
+        /**
+         * @readonly
+         */
         private UnleashContextProvider $contextProvider,
+        /**
+         * @readonly
+         */
         private BootstrapHandler $bootstrapHandler,
+        /**
+         * @readonly
+         */
         private BootstrapProvider $bootstrapProvider,
+        /**
+         * @readonly
+         */
         private EventDispatcherInterface $eventDispatcher,
+        /**
+         * @readonly
+         */
         private MetricsBucketSerializer $metricsBucketSerializer,
     ) {
     }
