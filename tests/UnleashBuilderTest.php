@@ -394,6 +394,13 @@ final class UnleashBuilderTest extends TestCase
 
             self::assertInstanceOf(FilesystemCachePool::class, $cache);
 
+            try {
+                self::assertTrue($cache->set('unleash-builder-test', 'cached-value', 60));
+                self::assertSame('cached-value', $cache->get('unleash-builder-test'));
+            } finally {
+                $cache->delete('unleash-builder-test');
+            }
+
             // Remove cache/filesystem-adapter from the list of available implementations
             // so we can test what happens when it's missing.
             $defaultImplementations['cache'][FilesystemCachePool::class . 2] = [];
