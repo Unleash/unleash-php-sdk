@@ -8,6 +8,7 @@ use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use LogicException;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -37,7 +38,7 @@ final class DefaultImplementationLocator
         'cache' => [
             FilesystemCachePool::class => [
                 Filesystem::class => [
-                    Local::class => ['{{tmpDir}}/unleash-default-cache'],
+                    LocalFilesystemAdapter::class => ['{{tmpDir}}/unleash-default-cache'],
                 ],
             ],
             Psr16Cache::class => [
@@ -49,6 +50,15 @@ final class DefaultImplementationLocator
             ],
         ],
     ];
+
+    public function __construct()
+    {
+        if (!class_exists(LocalFilesystemAdapter::class) && class_exists(Local::class)) {
+            $this->defaultImplementations['cache'][FilesystemCachePool::class][Filesystem::class] = [
+                Local::class => ['{{tmpDir}}/unleash-default-cache'],
+            ];
+        }
+    }
 
     public function findHttpClient(): ?ClientInterface
     {

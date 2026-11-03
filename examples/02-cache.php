@@ -1,7 +1,7 @@
 <?php
 
 use Cache\Adapter\Filesystem\FilesystemCachePool;
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Filesystem;
 use Unleash\Client\UnleashBuilder;
 
@@ -9,7 +9,7 @@ require __DIR__ . '/_common.php';
 
 $cache = new FilesystemCachePool(
     new Filesystem(
-        new Local(sys_get_temp_dir() . '/unleash-examples-cache')
+        new LocalFilesystemAdapter(sys_get_temp_dir() . '/unleash-examples-cache')
     )
 );
 
