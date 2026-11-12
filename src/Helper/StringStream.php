@@ -16,7 +16,10 @@ final class StringStream implements StreamInterface
      */
     private $stream;
 
-    private readonly int $size;
+    /**
+     * @readonly
+     */
+    private int $size;
 
     public function __construct(
         string $content
@@ -209,8 +212,11 @@ final class StringStream implements StreamInterface
         return $result;
     }
 
+    /**
+     * @return mixed
+     */
     #[Override]
-    public function getMetadata($key = null): mixed
+    public function getMetadata($key = null)
     {
         if ($this->stream === null) {
             throw new StreamException('The stream is detached');
