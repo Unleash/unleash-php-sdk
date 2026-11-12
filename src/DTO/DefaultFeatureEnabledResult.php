@@ -4,10 +4,16 @@ namespace Unleash\Client\DTO;
 
 use Override;
 
-final readonly class DefaultFeatureEnabledResult implements FeatureEnabledResult
+final class DefaultFeatureEnabledResult implements FeatureEnabledResult
 {
     public function __construct(
+        /**
+         * @readonly
+         */
         private bool $isEnabled = false,
+        /**
+         * @readonly
+         */
         private ?Strategy $strategy = null,
     ) {
     }

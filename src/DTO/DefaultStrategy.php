@@ -4,7 +4,7 @@ namespace Unleash\Client\DTO;
 
 use Override;
 
-final readonly class DefaultStrategy implements Strategy
+final class DefaultStrategy implements Strategy
 {
     /**
      * @param array<string,string> $parameters
@@ -13,11 +13,29 @@ final readonly class DefaultStrategy implements Strategy
      * @param array<Variant>       $variants
      */
     public function __construct(
+        /**
+         * @readonly
+         */
         private string $name,
+        /**
+         * @readonly
+         */
         private array $parameters = [],
+        /**
+         * @readonly
+         */
         private array $constraints = [],
+        /**
+         * @readonly
+         */
         private array $segments = [],
+        /**
+         * @readonly
+         */
         private bool $nonexistentSegments = false,
+        /**
+         * @readonly
+         */
         private array $variants = [],
     ) {
     }

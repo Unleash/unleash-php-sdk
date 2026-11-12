@@ -11,8 +11,14 @@ final class FeatureToggleDisabledEvent extends AbstractEvent
      * @internal
      */
     public function __construct(
-        private readonly Feature $feature,
-        private readonly Context $context,
+        /**
+         * @readonly
+         */
+        private Feature $feature,
+        /**
+         * @readonly
+         */
+        private Context $context,
     ) {
     }
 
